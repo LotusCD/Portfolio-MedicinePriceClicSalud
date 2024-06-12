@@ -19,7 +19,7 @@ The analysis of average costs by unit of dispensation reveals significant variab
 - **Overall Trend**: The variability in costs indicates that the form in which medication is dispensed plays a crucial role in its pricing. This can be attributed to differences in manufacturing processes, material requirements, and delivery mechanisms.
 
 ![Average Cost by Unidad de Dispensacion](AverageCostbyUnidaddeDispensacion.png)
-
+  
 
 #### 4. Average Cost by Principio Activo
 The average costs associated with different active ingredients also show substantial differences:
