@@ -18,8 +18,8 @@ The analysis of average costs by unit of dispensation reveals significant variab
 - **Highest Average Costs**: The units of dispensation with the highest average log prices are "Emulsión Oral," "Implante," and "Gas." These forms likely incur higher production or packaging costs, contributing to their elevated prices.
 - **Overall Trend**: The variability in costs indicates that the form in which medication is dispensed plays a crucial role in its pricing. This can be attributed to differences in manufacturing processes, material requirements, and delivery mechanisms.
 
-![Average Cost by Unidad de Dispensacion](AverageCostbyUnidaddeDispensacion.png)
-  
+![Average Cost by Unidad de Dispensacion](AverageCostbyUnidaddeDispensacion1.png)
+
 
 #### 4. Average Cost by Principio Activo
 The average costs associated with different active ingredients also show substantial differences:
@@ -27,7 +27,7 @@ The average costs associated with different active ingredients also show substan
 - **Highest Average Costs**: "mometasona," "nitazoxanida," and "oximetazolina" are the active ingredients with the highest average log prices. These differences may result from the rarity of the ingredients, their therapeutic importance, or higher production costs.
 - **Cost Variation**: The significant variation in costs among different active ingredients suggests that the choice of active ingredient is a key determinant of medication pricing.
 
-![Average Cost by Principio Activo](AverageCostbyPrincipioActivo.png)
+![Average Cost by Principio Activo](AverageCostbyPrincipioActivo1.png)
 
 #### 5. Average Cost by Fabricante
 An analysis of average costs by manufacturer indicates a wide range of pricing:
@@ -35,7 +35,7 @@ An analysis of average costs by manufacturer indicates a wide range of pricing:
 - **Highest Average Costs**: Manufacturers such as "Sophia," "Sophia Beta," and "Salus Pharma" have the highest average log prices. Factors such as brand reputation, production capabilities, and market strategies likely influence these costs.
 - **Manufacturer Influence**: The variability in costs among manufacturers underscores the significant impact of the producer on medication pricing, potentially due to differences in manufacturing efficiency, quality, and brand value.
 
-![Average Cost by Fabricante](AverageCostbyFabricante.png)
+![Average Cost by Fabricante](AverageCostbyFabricante1.png)
 
 #### 6. Feature Importance from XGBoost Model
 The XGBoost regression model identifies the relative importance of different features in predicting medication prices:
@@ -44,7 +44,7 @@ The XGBoost regression model identifies the relative importance of different fea
 - **Moderate Importance**: The concentration of the medication ("concentracion_en_gramos") and the factor number ("numerofactor") have moderate importance.
 - **Least Important**: The distribution channel ("canal_encoded") has the least impact on pricing.
 
-![Feature Importance](Feature%20Importance%20from%20Random%20Forest.png)
+![Feature Importance](Feature%20Importance%20from%20Random%20Forest1.png)
 
 #### 7. Model Performance Comparison
 A comparison of model performance metrics across different regression models highlights the effectiveness of XGBoost:
