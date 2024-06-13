@@ -60,7 +60,89 @@ A comparison of model performance metrics across different regression models hig
 
 - **XGBoost Performance**: XGBoost outperforms other models, achieving the lowest Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE), as well as the highest R-squared (R^2) value. This indicates that XGBoost provides the most accurate predictions for medication prices among the models tested.
 
-#### 8. Conclusion
+#### 8. Using the Model
+To use the trained XGBoost model for predicting medication prices, follow these steps:
+
+1. **Load the Model and Mappings**:
+    ```python
+    import pandas as pd
+    import joblib
+
+    # Load the model
+    loaded_model = joblib.load('./model.pkl')  # Replace with the actual path to your model
+
+    # Load your training data (assuming train_df is your training DataFrame)
+    train_df = pd.read_csv('./train_data.csv')  # Replace with the actual path to your training data
+
+    # Create mappings from the training data
+    unidad_de_dispensacion_mapping = train_df[['unidad_de_dispensacion', 'unidad_de_dispensacion_encoded']].drop_duplicates().set_index('unidad_de_dispensacion')['unidad_de_dispensacion_encoded'].to_dict()
+    principio_activo_mapping = train_df[['principio_activo', 'principio_activo_encoded']].drop_duplicates().set_index('principio_activo')['principio_activo_encoded'].to_dict()
+    fabricante_mapping = train_df[['fabricante', 'fabricante_encoded']].drop_duplicates().set_index('fabricante')['fabricante_encoded'].to_dict()
+    canal_mapping = train_df[['canal', 'canal_encoded']].drop_duplicates().set_index('canal')['canal_encoded'].to_dict()
+    ```
+
+2. **Define the Prediction Function**:
+    ```python
+    def predict_entry(model, entry, unidad_de_dispensacion_mapping, principio_activo_mapping, fabricante_mapping, canal_mapping):
+        """
+        Predict the output for a given entry using the trained model.
+
+        Parameters:
+        - model: Trained model loaded from pickle
+        - entry: Dictionary containing the input features with human-readable names
+        - unidad_de_dispensacion_mapping: Mapping dictionary for unidad_de_dispensacion
+        - principio_activo_mapping: Mapping dictionary for principio_activo
+        - fabricante_mapping: Mapping dictionary for fabricante
+        - canal_mapping: Mapping dictionary for canal
+
+        Returns:
+        - Prediction result from the model
+        """
+        try:
+            # Map human-readable names to encoded values
+            entry_encoded = {
+                'unidad_de_dispensacion_encoded': unidad_de_dispensacion_mapping[entry['unidad_de_dispensacion']],
+                'principio_activo_encoded': principio_activo_mapping[entry['principio_activo']],
+                'fabricante_encoded': fabricante_mapping[entry['fabricante']],
+                'concentracion_en_gramos': entry['concentracion_en_gramos'],
+                'numerofactor': entry['numerofactor'],
+                'canal_encoded': canal_mapping[entry['canal']]
+            }
+        except KeyError as e:
+            raise ValueError(f"Mapping error: {e}. Please ensure all values are correctly mapped.")
+
+        # Convert the encoded entry to a DataFrame
+        entry_df = pd.DataFrame([entry_encoded])
+
+        # Ensure the order of columns matches the training data
+        entry_df = entry_df[['unidad_de_dispensacion_encoded', 'principio_activo_encoded', 'fabricante_encoded', 'concentracion_en_gramos', 'numerofactor', 'canal_encoded']]
+
+        # Predict using the model
+        prediction = model.predict(entry_df)
+
+        return prediction[0]  # Assuming the model returns a list/array of predictions
+    ```
+
+3. **Predict Using an Example Entry**:
+    ```python
+    # Example entry to predict
+    example_entry = {
+        'unidad_de_dispensacion': 'Jarabe',
+        'principio_activo': 'acido valproico',
+        'fabricante': 'Novamed',
+        'concentracion_en_gramos': 5,
+        'numerofactor': 3,
+        'canal': 'Comercial'
+    }
+
+    # Predict using the example entry
+    result = predict_entry(loaded_model, example_entry, unidad_de_dispensacion_mapping, principio_activo_mapping, fabricante_mapping, canal_mapping)
+    real_price_prediction = np.expm1(result)  # Reverse the log transformation
+
+    print("Prediction:", real_price_prediction)
+    ```
+
+#### 9. Conclusion
 The analysis demonstrates that the form of medication, active ingredients, and manufacturers are the primary factors influencing medication prices. The unit of dispensation is the most significant predictor, reflecting the impact of production and packaging processes on costs. Active ingredients and manufacturers also play crucial roles, highlighting the importance of ingredient sourcing and brand reputation. The concentration and distribution channels have lesser but still notable effects on pricing.
 
 XGBoost has been identified as the most effective model for predicting medication prices, providing superior accuracy compared to other models. These insights provide a comprehensive understanding of the factors affecting medication costs and can inform decision-making in the pharmaceutical industry, from production planning to pricing strategies.
